@@ -1,0 +1,123 @@
+set nocompatible
+filetype off
+
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'rust-lang/rust.vim'
+Plugin 'easymotion/vim-easymotion'
+
+call vundle#end()
+filetype plugin indent on
+
+" YouCompleteMe settings
+let g:ycm_server_python_interpreter = '/usr/bin/python'
+let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/.ycm_extra_conf.py'
+let g:ycm_collect_identifiers_from_tags_files=1
+let g:ycm_seed_identifiers_with_syntax=1
+let g:ycm_autoclose_preview_window_after_completion=1
+let g:ycm_confirm_extra_conf=0
+
+" EasyMotion keybinds
+let g:mapleader = "\<Space>"
+map <Leader> <Plug>(easymotion-prefix)
+
+set wildmenu
+set wildmode=longest:full,full
+
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set expandtab
+set shiftround
+set smarttab
+set autoindent
+set smartindent
+set invnumber
+set wrap
+set noendofline binary
+set nu
+set rnu
+
+set ruler
+set so=7
+
+set mouse=i
+set splitbelow
+set splitright
+set autoread
+set backspace=indent,eol,start
+
+set hlsearch
+set incsearch
+set lazyredraw
+set magic
+set smartcase
+set whichwrap+=<,>,h,l
+set encoding=utf8
+
+set nobackup
+set nowb
+set noswapfile
+
+syntax on
+
+set pastetoggle=<C-b>
+
+map <F2> :w<CR>i
+imap <F2> <Esc>:w<CR>i<Right>
+
+map <F3> :tabnew<CR>:e
+imap <F3> <ESC>:tabnew<CR>:e
+
+map <F4> :q <CR>
+imap <F4> <ESC>:q <CR>i
+
+map <F5> :tabprev<CR>
+imap <F5> <ESC>:tabprev<CR>i
+
+map <F6> :tabnext<CR>
+imap <F6> <ESC>:tabnext<CR>i
+
+map <F7> i
+imap <F7> <ESC>i
+
+map <F10> :!open -a /Applications/Sublime\ Text.app/ % & <CR>i
+imap <F10> <ESC>:!open -a /Applications/Sublime\ Text.app/ % & <CR>i
+
+map ˙ <Left><Left><Left><Left><Left><Left><Left><Left><Left><Left>
+imap ˙ <Left><Left><Left><Left><Left><Left><Left><Left><Left><Left>
+
+map ˚ <Up><Up><Up><Up><Up><Up><Up><Up><Up><Up>
+imap ˚ <Up><Up><Up><Up><Up><Up><Up><Up><Up><Up>
+
+map ¬ <Right><Right><Right><Right><Right><Right><Right><Right><Right><Right><Right>
+imap ¬ <Right><Right><Right><Right><Right><Right><Right><Right><Right><Right><Right>
+
+map ∆ <Down><Down><Down><Down><Down><Down><Down><Down><Down><Down>
+imap ∆ <Down><Down><Down><Down><Down><Down><Down><Down><Down><Down>
+
+map <F8> :!clear<CR>i
+imap <F8> <ESC>:!clear<CR>i
+
+autocmd FileType c setlocal makeprg=gcc\ -g\ -O2\ -Wall\ %\ -o\ _%<\ -lm
+autocmd FileType cpp setlocal makeprg=clang++\ -std=c++1z\ -I.\ -include\ /usr/local/include/bits/stdc++.h\ -O2\ -Wall\ -Wextra\ -Wl,-stack_size\ -Wl,10000000\ -DLOCAL\ %\ -o\ _%<\ -lm
+autocmd FileType rust setlocal makeprg=rustc\ -g\ %\ -o\ _%<
+
+autocmd FileType c,cpp,rust map <buffer> <F8> :!clear<CR>:make!<CR>
+autocmd FileType c,cpp,rust imap <buffer> <F8> <ESC>:!clear<CR>:make!<CR>
+
+imap <F9> <ESC> <F9>
+
+" Running C/ C++
+autocmd FileType c,cpp,rust map <buffer> <F9> :!clear<CR>:make!<cr>:!time ./_%< <CR>
+
+" Running Python
+autocmd FileType python map <buffer> <F9> :!clear<CR>:!time python3 % <CR>
+
+" Running Bash
+autocmd FileType bash,sh map <buffer> <F9> :!clear<CR>:!time ./% <CR>
+
+set expandtab
