@@ -111,7 +111,7 @@ autocmd FileType c,cpp,rust imap <buffer> <F8> <ESC>:!clear<CR>:make!<CR>
 
 imap <F9> <ESC> <F9>
 
-" Running C/ C++
+" Running C/C++/Rust
 autocmd FileType c,cpp,rust map <buffer> <F9> :!clear<CR>:make!<cr>:!time ./_%< <CR>
 
 " Running Python
