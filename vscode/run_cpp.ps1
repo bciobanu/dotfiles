@@ -5,7 +5,7 @@ $fileBase = [System.IO.Path]::GetFileNameWithoutExtension($filePath)
 $cmdPath = "g++"
 $cmdArgList = @(
 	"-Winvalid-pch", "-I.", "-include", "C:\Users\dev\Documents\Work\precompiled\stdc++.h",
-	"-Wall", "-Wextra", "-Wl,--stack=1000000",
+	"-Wall", "-Wextra", "-Wl,--stack=100000000",
 	"-std=c++17", "-DLOCAL", "-O2", $filePath, "-o", "$fileBase.exe"
 )
 
