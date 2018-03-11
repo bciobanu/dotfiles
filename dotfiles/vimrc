@@ -43,6 +43,7 @@ set rnu
 
 set ruler
 set so=7
+set cc=80
 
 set mouse=i
 set splitbelow
