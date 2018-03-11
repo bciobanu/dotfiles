@@ -6,17 +6,17 @@ alias ll="ls -A -l"
 alias subl="open -a /Applications/Sublime\ Text.app/"
 
 comp() {
-   clang++ -std=c++1z -O2 -DLOCAL -Wall -Wextra -Wl,-stack_size -Wl,10000000 $1 -o _${1%%.%} -lm 
+   clang++ -std=c++1z -O2 -DLOCAL -Wall -Wextra -Wl,-stack_size -Wl,1000000000 $1 -o _${1%%.%} -lm 
 }
 
 run() {
-   clang++ -std=c++1z -O2 -DLOCAL -Wall -Wextra -Wl,-stack_size -Wl,10000000 $1 -o _${1%%.%} -lm 
+   clang++ -std=c++1z -O2 -DLOCAL -Wall -Wextra -Wl,-stack_size -Wl,1000000000 $1 -o _${1%%.%} -lm 
    time ./_${1%%.%}
    rm _${1%%.%}
 }
 
 debug() {
-    clang++ -Wall -Wextra -Wl,-stack_size -Wl,10000000 -pedantic -std=c++1z -DLOCAL -O2 -Wshadow -Wformat=2 -Wfloat-equal -Wconversion -Wshift-overflow -Wcast-qual -Wcast-align -D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC -D_FORTIFY_SOURCE=2 -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fstack-protector $1 -o _${1%%.%} -lm
+    clang++ -Wall -Wextra -Wl,-stack_size -Wl,1000000000 -pedantic -std=c++1z -DLOCAL -O2 -Wshadow -Wformat=2 -Wfloat-equal -Wconversion -Wshift-overflow -Wcast-qual -Wcast-align -D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC -D_FORTIFY_SOURCE=2 -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fstack-protector $1 -o _${1%%.%} -lm
     time ./_${1%%.%}
     rm _${1%%.%}
 }
