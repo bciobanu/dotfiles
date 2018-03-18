@@ -68,13 +68,13 @@ syntax on
 set pastetoggle=<C-b>
 
 map <F2> :w<CR>i
-imap <F2> <Esc>:w<CR>i<Right>
+imap <F2> <ESC>:w<CR>i<Right>
 
 map <F3> :tabnew<CR>:e
 imap <F3> <ESC>:tabnew<CR>:e
 
 map <F4> :q <CR>
-imap <F4> <ESC>:q <CR>i
+imap <F4> <ESC>:q<CR>i
 
 map <F5> :tabprev<CR>
 imap <F5> <ESC>:tabprev<CR>i
@@ -104,16 +104,16 @@ map <F8> :!clear<CR>i
 imap <F8> <ESC>:!clear<CR>i
 
 autocmd FileType c setlocal makeprg=gcc\ -g\ -O2\ -Wall\ %\ -o\ _%<\ -lm
-autocmd FileType cpp setlocal makeprg=clang++\ -std=c++1z\ -I.\ -include\ /usr/local/include/bits/stdc++.h\ -O2\ -Wall\ -Wextra\ -Wl,-stack_size\ -Wl,1000000000\ -DLOCAL\ %\ -o\ _%<\ -lm
+autocmd FileType cc,cpp setlocal makeprg=clang++\ -std=c++1z\ -I.\ -include\ /usr/local/include/debug.h\ -O2\ -Wall\ -Wextra\ -Wl,-stack_size\ -Wl,10000000\ -DLOCAL\ %\ -o\ _%<\ -lm
 autocmd FileType rust setlocal makeprg=rustc\ -g\ %\ -o\ _%<
 
-autocmd FileType c,cpp,rust map <buffer> <F8> :!clear<CR>:make!<CR>
-autocmd FileType c,cpp,rust imap <buffer> <F8> <ESC>:!clear<CR>:make!<CR>
+autocmd FileType c,cc,cpp,rust map <buffer> <F8> :!clear<CR>:make!<CR>
+autocmd FileType c,cc,cpp,rust imap <buffer> <F8> <ESC>:!clear<CR>:make!<CR>
 
 imap <F9> <ESC> <F9>
 
-" Running C/C++/Rust
-autocmd FileType c,cpp,rust map <buffer> <F9> :!clear<CR>:make!<cr>:!time ./_%< <CR>
+" Running C/ C++
+autocmd FileType c,cc,cpp,rust map <buffer> <F9> :!clear<CR>:make!<cr>:!time ./_%< <CR>
 
 " Running Python
 autocmd FileType python map <buffer> <F9> :!clear<CR>:!time python3 % <CR>
