@@ -1,10 +1,9 @@
-# Precompiled header should be compiled using the same parameters
-$sw = [Diagnostics.Stopwatch]::StartNew()
 $filePath = $args[0]
 $fileBase = [System.IO.Path]::GetFileNameWithoutExtension($filePath)
 $cmdPath = "g++"
 $cmdArgList = @(
-	"-Winvalid-pch", "-I.", "-include", "precompiled\stdc++.h",
+	"-Winvalid-pch",
+	"-I.", "-include", "precompiled\debug.h",
 	"-Wall", "-Wextra", "-Wl,--stack=100000000",
 	"-std=c++17", "-DLOCAL", "-O2", $filePath, "-o", "$fileBase.exe"
 )
@@ -19,6 +18,13 @@ $cmdListDebug = @(
 # !
 # Stop-Process -processname $fileBase
 
-& $cmdPath $cmdArgList $cmdListDebug; & ".\$fileBase.exe"
-$sw.Stop()
-$sw.ElapsedMilliseconds.ToString() + " ms"
+$compile_watch = [Diagnostics.Stopwatch]::StartNew()
+& $cmdPath $cmdArgList $cmdListDebug; 
+$compile_watch.Stop()
+
+$exec_watch = [Diagnostics.Stopwatch]::StartNew()
+& ".\$fileBase.exe"
+$exec_watch.Stop()
+
+$compile_watch.ElapsedMilliseconds.ToString() + " ms | " + $exec_watch.ElapsedMilliseconds.ToString() + " ms"
+
