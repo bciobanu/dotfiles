@@ -1,5 +1,6 @@
 // Compile with g++ / clang++ [your other options here ..] -x c++-header -o debug.h.gch debug.h 
-#pragma once
+#ifndef PRECOMPILED_DEBUG_H_
+#define PRECOMPILED_DEBUG_H_
 #include <bits/stdc++.h>
 
 #define Debug(...) \
@@ -36,7 +37,7 @@ std::ostream& PrintInteger(std::ostream& out, T x,
         digits.push_back(0);
     }
     PrintArray(out, digits.crbegin(), digits.crend());
-    out << '\n';
+    out << std::endl;
     return out;
 }
 
@@ -149,7 +150,7 @@ void Print(const char*& txt, const char* _txt) {
     }
 
     if (name == "\"\\n\"") {
-        std::cerr << "\n";
+        std::cerr << std::endl;
         return ;
     }
 
@@ -190,7 +191,8 @@ void _debug(const char*& txt, T&& t, Args&&... args) {
 template <typename... Args>
 void __debugE(const char* txt, Args&&... args) {
     _debug(txt, args...);
-    std::cerr << '\n';
+    std::cerr << std::endl;
 }
 
 }
+#endif  // PRECOMPILED_DEBUG_H_
