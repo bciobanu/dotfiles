@@ -2,21 +2,33 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
     source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
-alias ll="ls -A -l"
+autoload -Uz promptinit
+promptinit
+prompt nicoulaj 
+
+setopt prompt_subst
+
+turquoise="%F{cyan}"
+orange="%F{yellow}"
+purple="%F{magenta}"
+limegreen="%F{green}"
+PR_RST="%f"
+
+PROMPT=$'
+%{$purple%}%n${PR_RST} at %{$orange%}%m${PR_RST} in %{$limegreen%}%~${PR_RST} %{$turquoise%}${PR_RST}
+$ '
+
+# Improve utils 
+alias ll="exa -la"
 alias subl="open -a /Applications/Sublime\ Text.app/"
+alias vim="/usr/local/bin/vim"
+alias zip="zip -9wr"
+alias grep="rg --color=auto"
+alias cat="bat"
 
-comp() {
-   clang++ -std=c++1z -O2 -DLOCAL -Wall -Wextra -Wl,-stack_size -Wl,1000000000 $1 -o _${1%%.%} -lm 
-}
+# Common
+alias reload="source ~/.zshrc"
+alias trynet="ping 8.8.8.8"
+alias hgrep="history -fd 0 | rg --color=auto"
+alias h="history -fd -500"
 
-run() {
-   clang++ -std=c++1z -O2 -DLOCAL -Wall -Wextra -Wl,-stack_size -Wl,1000000000 $1 -o _${1%%.%} -lm 
-   time ./_${1%%.%}
-   rm _${1%%.%}
-}
-
-debug() {
-    clang++ -Wall -Wextra -Wl,-stack_size -Wl,1000000000 -pedantic -std=c++1z -DLOCAL -O2 -Wshadow -Wformat=2 -Wfloat-equal -Wconversion -Wshift-overflow -Wcast-qual -Wcast-align -D_GLIBCXX_DEBUG -D_GLIBCXX_DEBUG_PEDANTIC -D_FORTIFY_SOURCE=2 -fsanitize=address -fsanitize=undefined -fno-sanitize-recover=all -fstack-protector $1 -o _${1%%.%} -lm
-    time ./_${1%%.%}
-    rm _${1%%.%}
-}

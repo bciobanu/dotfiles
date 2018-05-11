@@ -1,3 +1,9 @@
+let g:mapleader = "\<Space>"
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Plugins
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 set nocompatible
 filetype off
 
@@ -8,64 +14,217 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'rust-lang/rust.vim'
 Plugin 'easymotion/vim-easymotion'
+Plugin 'junegunn/vim-easy-align'
+
+" Plugin 'liuchengxu/space-vim-dark along with Quantum
 
 call vundle#end()
 filetype plugin indent on
+syntax on
 
 " YouCompleteMe settings
-let g:ycm_server_python_interpreter = '/usr/bin/python'
-let g:ycm_global_ycm_extra_conf = '~/.vim/bundle/YouCompleteMe/.ycm_extra_conf.py'
+
+let g:ycm_server_python_interpreter='/usr/bin/python'
+let g:ycm_global_ycm_extra_conf='~/.vim/bundle/YouCompleteMe/.ycm_extra_conf.py'
 let g:ycm_collect_identifiers_from_tags_files=1
 let g:ycm_seed_identifiers_with_syntax=1
 let g:ycm_autoclose_preview_window_after_completion=1
 let g:ycm_confirm_extra_conf=0
+let g:ycm_min_num_chars_for_completion=5
 
 " EasyMotion keybinds
-let g:mapleader = "\<Space>"
-map <Leader> <Plug>(easymotion-prefix)
+
+let g:EasyMotion_do_mapping=0
+map <Leader>s <Plug>(easymotion-bd-f2)
+
+" EasyAlign keybinds
+xmap ga <Plug>(EasyAlign)
+nmap ga <Plug>(EasyAlign)
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Theme
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Fix colors
+
+if has('termguicolors')
+    set termguicolors
+    let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+    let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+endif
+
+colorscheme space-vim-dark
+highlight LineNr guifg='#20af81' guibg='#212121'
+highlight NonText guifg='#837b8d'
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Options
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 set wildmenu
 set wildmode=longest:full,full
-
-set tabstop=4
-set softtabstop=4
-set shiftwidth=4
-set expandtab
-set shiftround
-set smarttab
-set autoindent
-set smartindent
 set invnumber
 set wrap
 set noendofline binary
-set nu
-set rnu
+set number
+set relativenumber
 
-set ruler
-set so=7
-set cc=80
+" Toggle invisible characters
+set list
+set listchars=eol:$,tab:>-,trail:.,extends:>,precedes:<
 
-set mouse=i
-set splitbelow
-set splitright
 set autoread
+
+" Discard error bells
+set noerrorbells
+set cursorline
+
+" Make backspace behave as it should
 set backspace=indent,eol,start
-
-set hlsearch
-set incsearch
-set lazyredraw
-set magic
-set smartcase
 set whichwrap+=<,>,h,l
-set encoding=utf8
+set encoding=utf-8
 
+" Performance options
+set lazyredraw
+set ttyfast
+set synmaxcol=200
 set nobackup
 set nowb
 set noswapfile
 
-syntax on
+" Tabs/window
+set mouse=i
+set splitbelow
+set splitright
+
+" Indenting
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+" set expandtab
+set shiftround
+set smarttab
+set autoindent
+set smartindent
+set cindent
+set ruler
+set scrolloff=7
+set colorcolumn=80
+
+" Search
+set hlsearch
+set incsearch
+set magic
+set smartcase
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Status
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+function! HasPaste()
+    if &paste
+        return 'PASTE MODE  '
+    en
+    return ''
+endfunction
+
+set laststatus=2
+set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ Column:\ %c
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Visual mode
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+xnoremap @ :<C-u>call ExecuteMacroOverVisualRange()<CR>
+
+function! ExecuteMacroOverVisualRange()
+    echo "@".getcmdline()
+    execute ":'<,'>normal @".nr2char(getchar())
+endfunction
+
+" Search for selection
+
+function! CmdLine(str)
+    exe "menu Foo.Bar :" . a:str
+    emenu Foo.Bar
+    unmenu Foo
+endfunction
+
+function! VisualSelection(direction) range
+    let l:saved_reg = @"
+    execute "normal! vgvy"
+
+    let l:pattern = escape(@", '\\/.*$^~[]')
+    let l:pattern = substitute(l:pattern, "\n$", "", "")
+
+    if a:direction == 'b'
+        execute "normal ?" . l:pattern . "^M"
+    elseif a:direction == 'gv'
+        call CmdLine("vimgrep " . '/'. l:pattern . '/' . ' **/*.')
+    elseif a:direction == 'replace'
+        call CmdLine("%s" . '/'. l:pattern . '/')
+    elseif a:direction == 'f'
+        execute "normal /" . l:pattern . "^M"
+    endif
+
+    let @/ = l:pattern
+    let @" = l:saved_reg
+endfunction
+
+vnoremap <silent> * :call VisualSelection('f')<CR>
+vnoremap <silent> # :call VisualSelection('b')<CR>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Key mappings
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+set timeoutlen=1000
+set ttimeoutlen=50
+
+" ESC mappings
+set <F13>=jk
+imap <F13> <ESC>
+set <F14>=kj
+imap <F14> <ESC>
+map ; :
 
 set pastetoggle=<C-b>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Moving around
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Break long lines
+map j gj
+map k gk
+map ^ g^
+map $ g$
+
+" Disable highlight
+map <silent> <leader><cr> :noh<cr>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Moving between windows
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Auto-creates window if it doesn't exist
+function! WinMove(key)
+    let t:curwin = winnr()
+    exec "wincmd ".a:key
+    if (t:curwin == winnr())
+        if (match(a:key,'[jk]'))
+            wincmd v
+        else
+            wincmd s
+        endif
+        exec "wincmd ".a:key
+    endif
+endfunction
+
+map <silent> <C-j> :call WinMove('h')<cr>
+map <silent> <C-k> :call WinMove('k')<cr>
+map <silent> <C-h> :call WinMove('h')<cr>
+map <silent> <C-l> :call WinMove('l')<cr>
 
 map <F2> :w<CR>i
 imap <F2> <ESC>:w<CR>i<Right>
@@ -104,7 +263,7 @@ map <F8> :!clear<CR>i
 imap <F8> <ESC>:!clear<CR>i
 
 autocmd FileType c setlocal makeprg=gcc\ -g\ -O2\ -Wall\ %\ -o\ _%<\ -lm
-autocmd FileType cc,cpp setlocal makeprg=clang++\ -std=c++1z\ -I.\ -include\ /usr/local/include/debug.h\ -O2\ -Wall\ -Wextra\ -Wl,-stack_size\ -Wl,10000000\ -DLOCAL\ %\ -o\ _%<\ -lm
+autocmd FileType cc,cpp setlocal makeprg=clang++\ -std=c++1z\ -I.\ -include\ /usr/local/include/debug.h\ -Wall\ -Wextra\ -Wfatal-errors\ -g\ -fsanitize=undefined,address\ -Wl,-stack_size\ -Wl,10000000\ -DLOCAL\ %\ -o\ _%<\ -lm
 autocmd FileType rust setlocal makeprg=rustc\ -g\ %\ -o\ _%<
 
 autocmd FileType c,cc,cpp,rust map <buffer> <F8> :!clear<CR>:make!<CR>
@@ -112,7 +271,7 @@ autocmd FileType c,cc,cpp,rust imap <buffer> <F8> <ESC>:!clear<CR>:make!<CR>
 
 imap <F9> <ESC> <F9>
 
-" Running C/ C++
+" Running C/C++/Rust
 autocmd FileType c,cc,cpp,rust map <buffer> <F9> :!clear<CR>:make!<cr>:!time ./_%< <CR>
 
 " Running Python
@@ -120,5 +279,15 @@ autocmd FileType python map <buffer> <F9> :!clear<CR>:!time python3 % <CR>
 
 " Running Bash
 autocmd FileType bash,sh map <buffer> <F9> :!clear<CR>:!time ./% <CR>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Don't mind me
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+function! TrimWhiteSpaces()
+    %s/\s\+$//e
+endfunction
+
+autocmd BufWrite * :call TrimWhiteSpaces()
 
 set expandtab
