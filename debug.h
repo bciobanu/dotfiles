@@ -1,11 +1,11 @@
 // Compile with g++ / clang++ [your other options here ..] -x c++-header -o debug.h.gch debug.h 
-#ifndef PRECOMPILED_DEBUG_H_
-#define PRECOMPILED_DEBUG_H_
+#ifndef _PRECOMPILED_DEBUG_H_
+#define _PRECOMPILED_DEBUG_H_
 #include <bits/stdc++.h>
 
 #define Debug(...) \
     do { \
-        cerr << __PRETTY_FUNCTION__ << ":" << __LINE__ << " - "; \
+        std::cerr << __PRETTY_FUNCTION__ << ":" << __LINE__ << " - "; \
         Base::__debugE(#__VA_ARGS__, __VA_ARGS__); \
     } while (0)
 
@@ -194,5 +194,6 @@ void __debugE(const char* txt, Args&&... args) {
     std::cerr << std::endl;
 }
 
-}
-#endif  // PRECOMPILED_DEBUG_H_
+}  // namespace Base
+
+#endif  // _PRECOMPILED_DEBUG_H_
