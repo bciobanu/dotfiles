@@ -8,14 +8,16 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'easymotion/vim-easymotion'
 Plug 'rust-lang/rust.vim'
-Plug 'Valloric/YouCompleteMe'
+Plug 'Valloric/YouCompleteMe', { 'for': ['c', 'cpp', 'rust']}
 Plug 'vim-airline/vim-airline'
 Plug 'luochen1990/rainbow'
 Plug 'tmux-plugins/vim-tmux'
-
-Plug 'SirVer/ultisnips'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin'}
+Plug 'junegunn/fzf.vim'
+Plug 'SirVer/ultisnips', { 'for': ['cpp', 'rust']}
 Plug 'ervandew/supertab'
-
+Plug 'scrooloose/nerdcommenter'
+Plug 'godlygeek/tabular'
 "Plug 'liuchengxu/space-vim-dark' with Quantum
 
 call plug#end()
@@ -42,22 +44,18 @@ nnoremap <Leader>g :YcmCompleter GoTo<CR>
 let g:EasyMotion_do_mapping=0
 map <Leader>s <Plug>(easymotion-bd-f2)
 
-" EasyAlign keybinds
-xmap ga <Plug>(EasyAlign)
-nmap ga <Plug>(EasyAlign)
-
 " Airline
 set laststatus=2
 let g:airline_extensions=['tabline']
 let g:airline_powerline_fonts=1
 let g:airline_theme='violet'
 let g:airline#extensions#tabline#enabled=1
-let g:airline#extensions#default#section_truncate_width = {
+let g:airline#extensions#default#section_truncate_width={
     \ 'x': 40,
     \ 'y': 10,
     \ 'z': 60
     \ }
-let g:airline_section_y = '%{winnr()}'
+let g:airline_section_y='%{winnr()}'
 
 " Make rainbow active
 let g:rainbow_active=1
@@ -71,7 +69,7 @@ if &term =~ '^screen'
     execute "set <xLeft>=\e[1;*D"
 endif
 
-" Make UltiSnips work nicely with YouCompleteMe
+" UltiSnips
 let g:ycm_key_list_select_completion=['<C-n>', '<Down>']
 let g:ycm_key_list_previous_completion=['<C-p>', '<Up>']
 
@@ -80,8 +78,35 @@ let g:SuperTabCrMapping=0
 
 let g:UltiSnipsExpandTrigger='<Tab>'
 let g:UltiSnipsJumpForwardTrigger='<Tab>'
-let g:UltiSnipsBackwardTrigger='<s-Tab>'
+let g:UltiSnipsBackwardTrigger='<S-Tab>'
 let g:UltiSnipsSnippetsDir=['~/.vim/snippets']
+
+" NERDCommenter
+let g:NERDSpaceDelims=1
+nmap <Leader>;; <Plug>NERDCommenterToggle
+vmap <Leader>;; <Plug>NERDCommenterToggle
+omap <Leader>;; <Plug>NERDCommenterToggle
+
+" Fuzzy Finder
+let g:fzf_action={
+    \ 'ctrl-t': 'tab split',
+    \ 'ctrl-s': 'split',
+    \ 'ctrl-v': 'vsplit'
+    \ }
+
+nmap <Leader>? <Plug>(fzf-maps-n)
+xmap <Leader>? <Plug>(fzf-maps-x)
+omap <Leader>? <Plug>(fzf-maps-o)
+
+command! -bang -nargs=* F call fzf#vim#grep(
+    \ 'rg --column --line-number --no-heading --fixed-strings
+    \ --no-ignore --hidden --follow --color=always
+    \ -g "*.{cpp,cc,h,hpp,hs,c,go,py,rs,tex}"
+    \ -g "!{.git}/*" '
+    \ .shellescape(<q-args>), 1,
+    \ <bang>0 ? fzf#vim#with_preview('up:60%')
+    \         : fzf#vim#with_preview('right:50%:hidden', '?'),
+    \ <bang>0)
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Theme
@@ -113,6 +138,7 @@ set relativenumber
 set autoread
 set cmdheight=2
 set showcmd
+set cursorline
 
 " Toggle invisible characters
 set list
@@ -120,7 +146,7 @@ set listchars=eol:$,tab:>-,trail:.,extends:>,precedes:<
 
 " Discard error bells
 set noerrorbells
-set cursorline
+set belloff=all
 
 " Make backspace behave as it should
 set backspace=indent,eol,start
@@ -158,7 +184,7 @@ set colorcolumn=80
 set hlsearch
 set incsearch
 set magic
-set smartcase
+set ignorecase
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Visual mode
@@ -217,7 +243,7 @@ set <F14>=kj
 imap <F14> <ESC>
 map ; :
 
-"set pastetoggle=<C-b>
+set pastetoggle=<C-b>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Moving around
