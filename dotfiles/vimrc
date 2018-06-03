@@ -4,33 +4,38 @@ let g:mapleader = "\<Space>"
 " Plugins
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-set nocompatible
-filetype off
+call plug#begin('~/.vim/plugged')
 
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+Plug 'easymotion/vim-easymotion'
+Plug 'rust-lang/rust.vim'
+Plug 'Valloric/YouCompleteMe'
+Plug 'vim-airline/vim-airline'
+Plug 'luochen1990/rainbow'
+Plug 'tmux-plugins/vim-tmux'
 
-Plugin 'VundleVim/Vundle.vim'
-Plugin 'Valloric/YouCompleteMe'
-Plugin 'rust-lang/rust.vim'
-Plugin 'easymotion/vim-easymotion'
-Plugin 'junegunn/vim-easy-align'
+Plug 'SirVer/ultisnips'
+Plug 'ervandew/supertab'
 
-" Plugin 'liuchengxu/space-vim-dark along with Quantum
+"Plug 'liuchengxu/space-vim-dark' with Quantum
 
-call vundle#end()
+call plug#end()
+
 filetype plugin indent on
 syntax on
 
 " YouCompleteMe settings
 
-let g:ycm_server_python_interpreter='/usr/bin/python'
-let g:ycm_global_ycm_extra_conf='~/.vim/bundle/YouCompleteMe/.ycm_extra_conf.py'
+let g:ycm_server_python_interpreter='/usr/local/bin/python3'
+let g:ycm_global_ycm_extra_conf='~/.vim/plugged/YouCompleteMe/.ycm_extra_conf.py'
 let g:ycm_collect_identifiers_from_tags_files=1
 let g:ycm_seed_identifiers_with_syntax=1
 let g:ycm_autoclose_preview_window_after_completion=1
 let g:ycm_confirm_extra_conf=0
-let g:ycm_min_num_chars_for_completion=5
+let g:ycm_min_num_of_chars_for_completion=4
+let g:ycm_filetype_whitelist={'c':1, 'cpp':1, 'rust':1}
+let g:ycm_rust_src_path='~/.rustup/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src'
+
+nnoremap <Leader>g :YcmCompleter GoTo<CR>
 
 " EasyMotion keybinds
 
@@ -40,6 +45,43 @@ map <Leader>s <Plug>(easymotion-bd-f2)
 " EasyAlign keybinds
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
+
+" Airline
+set laststatus=2
+let g:airline_extensions=['tabline']
+let g:airline_powerline_fonts=1
+let g:airline_theme='violet'
+let g:airline#extensions#tabline#enabled=1
+let g:airline#extensions#default#section_truncate_width = {
+    \ 'x': 40,
+    \ 'y': 10,
+    \ 'z': 60
+    \ }
+let g:airline_section_y = '%{winnr()}'
+
+" Make rainbow active
+let g:rainbow_active=1
+
+" Tmux
+if &term =~ '^screen'
+    " tmux will send xterm-style keys when its xterm-keys option is on
+    execute "set <xUp>=\e[1;*A"
+    execute "set <xDown>=\e[1;*B"
+    execute "set <xRight>=\e[1;*C"
+    execute "set <xLeft>=\e[1;*D"
+endif
+
+" Make UltiSnips work nicely with YouCompleteMe
+let g:ycm_key_list_select_completion=['<C-n>', '<Down>']
+let g:ycm_key_list_previous_completion=['<C-p>', '<Up>']
+
+let g:SuperTabDefaultCompletionType='<C-n>'
+let g:SuperTabCrMapping=0
+
+let g:UltiSnipsExpandTrigger='<Tab>'
+let g:UltiSnipsJumpForwardTrigger='<Tab>'
+let g:UltiSnipsBackwardTrigger='<s-Tab>'
+let g:UltiSnipsSnippetsDir=['~/.vim/snippets']
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Theme
@@ -68,12 +110,13 @@ set wrap
 set noendofline binary
 set number
 set relativenumber
+set autoread
+set cmdheight=2
+set showcmd
 
 " Toggle invisible characters
 set list
 set listchars=eol:$,tab:>-,trail:.,extends:>,precedes:<
-
-set autoread
 
 " Discard error bells
 set noerrorbells
@@ -108,7 +151,7 @@ set autoindent
 set smartindent
 set cindent
 set ruler
-set scrolloff=7
+set scrolloff=2
 set colorcolumn=80
 
 " Search
@@ -116,20 +159,6 @@ set hlsearch
 set incsearch
 set magic
 set smartcase
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Status
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-function! HasPaste()
-    if &paste
-        return 'PASTE MODE  '
-    en
-    return ''
-endfunction
-
-set laststatus=2
-set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ Column:\ %c
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Visual mode
@@ -178,7 +207,7 @@ vnoremap <silent> # :call VisualSelection('b')<CR>
 " Key mappings
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-set timeoutlen=1000
+set timeoutlen=500
 set ttimeoutlen=50
 
 " ESC mappings
@@ -188,7 +217,7 @@ set <F14>=kj
 imap <F14> <ESC>
 map ; :
 
-set pastetoggle=<C-b>
+"set pastetoggle=<C-b>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Moving around
@@ -241,44 +270,71 @@ imap <F5> <ESC>:tabprev<CR>i
 map <F6> :tabnext<CR>
 imap <F6> <ESC>:tabnext<CR>i
 
-map <F7> i
-imap <F7> <ESC>i
-
 map <F10> :!open -a /Applications/Sublime\ Text.app/ % & <CR>i
 imap <F10> <ESC>:!open -a /Applications/Sublime\ Text.app/ % & <CR>i
 
-map ˙ <Left><Left><Left><Left><Left><Left><Left><Left><Left><Left>
-imap ˙ <Left><Left><Left><Left><Left><Left><Left><Left><Left><Left>
+map ˙ 10h
+imap ˙ 10h
 
-map ˚ <Up><Up><Up><Up><Up><Up><Up><Up><Up><Up>
-imap ˚ <Up><Up><Up><Up><Up><Up><Up><Up><Up><Up>
+map ˚ 10k
+imap ˚ 10k
 
-map ¬ <Right><Right><Right><Right><Right><Right><Right><Right><Right><Right><Right>
-imap ¬ <Right><Right><Right><Right><Right><Right><Right><Right><Right><Right><Right>
+map ¬ 10l
+imap ¬ 10l
 
-map ∆ <Down><Down><Down><Down><Down><Down><Down><Down><Down><Down>
-imap ∆ <Down><Down><Down><Down><Down><Down><Down><Down><Down><Down>
+map ∆ 10j
+imap ∆ 10j
 
-map <F8> :!clear<CR>i
-imap <F8> <ESC>:!clear<CR>i
+function! RunFunc()
+    if exists("b:run")
+        execute "!time " . b:run
+    endif
+endfunction
 
-autocmd FileType c setlocal makeprg=gcc\ -g\ -O2\ -Wall\ %\ -o\ _%<\ -lm
-autocmd FileType cc,cpp setlocal makeprg=clang++\ -std=c++1z\ -I.\ -include\ /usr/local/include/debug.h\ -Wall\ -Wextra\ -Wfatal-errors\ -g\ -fsanitize=undefined,address\ -Wl,-stack_size\ -Wl,10000000\ -DLOCAL\ %\ -o\ _%<\ -lm
-autocmd FileType rust setlocal makeprg=rustc\ -g\ %\ -o\ _%<
+function! DebugFunc()
+    if exists("b:debug")
+        execute "!" . b:debug
+    endif
+endfunction
 
-autocmd FileType c,cc,cpp,rust map <buffer> <F8> :!clear<CR>:make!<CR>
-autocmd FileType c,cc,cpp,rust imap <buffer> <F8> <ESC>:!clear<CR>:make!<CR>
+function! CompileFunc(CallBackFunc)
+    if exists("b:compile")
+        execute "!" . b:compile
+        if v:shell_error == 0
+            call a:CallBackFunc()
+        endif
+    else
+        call a:CallBackFunc()
+    endif
+endfunction
 
-imap <F9> <ESC> <F9>
+" Compile + Run
+map <F9> :CompileRun<CR><CR>
+imap <F9> <ESC> :CompileRun<CR><CR>i
+command! CompileRun :call CompileFunc(function('RunFunc'))
 
-" Running C/C++/Rust
-autocmd FileType c,cc,cpp,rust map <buffer> <F9> :!clear<CR>:make!<cr>:!time ./_%< <CR>
+" Debug
+map <F8> :Debug<CR><CR>
+imap <F8> :Debug<CR><CR>i
+command! Debug :call CompileFunc(function('DebugFunc'))
 
-" Running Python
-autocmd FileType python map <buffer> <F9> :!clear<CR>:!time python3 % <CR>
+" C/C++
+autocmd FileType c let b:compile='clang -g -Wall -Wextra % -o %< -lm'
+autocmd FileType cpp let b:compile='clang++ -g -std=c++2a -Wall -Wextra -Wfatal-errors -fsanitize=undefined,address -include /usr/local/include/debug.h -lm -Wl,-stack_size,0xd0000000 % -o _%<'
+autocmd FileType c,cpp let b:run='./_%<'
+autocmd FileType cpp  let b:debug='lldb _%<'
 
-" Running Bash
-autocmd FileType bash,sh map <buffer> <F9> :!clear<CR>:!time ./% <CR>
+" Rust
+autocmd FileType rust let b:compile='rustc -g % -o _%<'
+autocmd FileType rust let b:run='./_%<'
+autocmd FileType rust let b:debug='lldb _%<'
+
+" Python
+autocmd FileType python let b:run='python3 %'
+
+" Bash
+autocmd FileType bash setlocal noexpandtab
+autocmd FileType bash let b:run='bash %'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Don't mind me
