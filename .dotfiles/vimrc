@@ -8,17 +8,17 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'easymotion/vim-easymotion'
 Plug 'rust-lang/rust.vim'
-Plug 'Valloric/YouCompleteMe', { 'for': ['c', 'cpp', 'rust']}
+Plug 'Valloric/YouCompleteMe', { 'for': ['c', 'cpp', 'rust'] }
 Plug 'vim-airline/vim-airline'
-Plug 'luochen1990/rainbow'
 Plug 'tmux-plugins/vim-tmux'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin'}
 Plug 'junegunn/fzf.vim'
-Plug 'SirVer/ultisnips', { 'for': ['cpp', 'rust']}
+Plug 'SirVer/ultisnips', { 'for': ['cpp', 'rust'] }
+Plug 'honza/vim-snippets'
 Plug 'ervandew/supertab'
 Plug 'scrooloose/nerdcommenter'
 Plug 'godlygeek/tabular'
-"Plug 'liuchengxu/space-vim-dark' with Quantum
+Plug 'liuchengxu/space-vim-dark' " with Quantum
 
 call plug#end()
 
@@ -27,7 +27,6 @@ syntax on
 
 " YouCompleteMe settings
 
-let g:ycm_server_python_interpreter='/usr/local/bin/python3'
 let g:ycm_global_ycm_extra_conf='~/.vim/plugged/YouCompleteMe/.ycm_extra_conf.py'
 let g:ycm_collect_identifiers_from_tags_files=1
 let g:ycm_seed_identifiers_with_syntax=1
@@ -208,9 +207,7 @@ endfunction
 function! VisualSelection(direction) range
     let l:saved_reg = @"
     execute "normal! vgvy"
-
-    let l:pattern = escape(@", '\\/.*$^~[]')
-    let l:pattern = substitute(l:pattern, "\n$", "", "")
+let l:pattern = escape(@", '\\/.*$^~[]') let l:pattern = substitute(l:pattern, "\n$", "", "")
 
     if a:direction == 'b'
         execute "normal ?" . l:pattern . "^M"
@@ -335,13 +332,13 @@ function! CompileFunc(CallBackFunc)
 endfunction
 
 " Compile + Run
-map <F9> :CompileRun<CR><CR>
-imap <F9> <ESC> :CompileRun<CR><CR>i
+map <F9> :CompileRun<CR>
+imap <F9> <ESC> :CompileRun<CR>i
 command! CompileRun :call CompileFunc(function('RunFunc'))
 
 " Debug
-map <F8> :Debug<CR><CR>
-imap <F8> :Debug<CR><CR>i
+map <F8> :Debug<CR>
+imap <F8> :Debug<CR>i
 command! Debug :call CompileFunc(function('DebugFunc'))
 
 " C/C++

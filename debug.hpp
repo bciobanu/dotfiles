@@ -1,17 +1,44 @@
-// Compile with g++ / clang++ [your other options here ..] -x c++-header -o debug.h.gch debug.h 
-#ifndef _PRECOMPILED_DEBUG_H_
-#define _PRECOMPILED_DEBUG_H_
+// Compile with g++ / clang++ [your other options here ..] -x c++-header -o debug.h.gch debug.h
+#ifndef _DEBUG_HPP_
+#define _DEBUG_HPP_
+
 #include <bits/stdc++.h>
 
-#define Debug(...) \
+#define DEBUG(...) \
     do { \
         std::cerr << __PRETTY_FUNCTION__ << ":" << __LINE__ << " - "; \
-        Base::__debugE(#__VA_ARGS__, __VA_ARGS__); \
+        Debug::__debugE(#__VA_ARGS__, __VA_ARGS__); \
     } while (0)
 
-namespace Base {
+#define START_TIMER(P, ...) Debug::Profiler P(#__VA_ARGS__)
+#define GET_TIME(P) P.get()
+#define PRINT_DIGITS(X, ...) Debug::PrintInteger(X, __VA_ARGS__)
 
-template<typename Iter>
+namespace Debug {
+
+struct Profiler {
+    Profiler(const std::string name_="") :
+        name(name_),
+        start_time(std::chrono::high_resolution_clock::now())
+    {}
+
+    ~Profiler() { get(); }
+
+    void get() {
+        std::cerr << name << ": " <<
+            std::chrono::duration_cast<std::chrono::duration<double>>
+                (std::chrono::high_resolution_clock::now() - start_time).count() << std::endl;
+    }
+
+    void reset(const std::string name_="") {
+        *this = Profiler(name_);
+    }
+
+    std::string name;
+    std::chrono::high_resolution_clock::time_point start_time;
+};
+
+template <typename Iter>
 std::ostream& PrintArray(std::ostream& out, Iter b, Iter e) {
     out << "[";
     for (auto iter = b; iter != e; ++iter) {
@@ -24,9 +51,8 @@ std::ostream& PrintArray(std::ostream& out, Iter b, Iter e) {
     return out;
 }
 
-template<typename T>
-std::ostream& PrintInteger(std::ostream& out, T x, 
-        const int base=10, const size_t mn_size=0) {
+template <typename T>
+void PrintInteger(T x, const int base=10, const size_t mn_size=0) {
     std::vector<int> digits;
     do {
         digits.push_back(x % base);
@@ -36,43 +62,42 @@ std::ostream& PrintInteger(std::ostream& out, T x,
     while (digits.size() < mn_size) {
         digits.push_back(0);
     }
-    PrintArray(out, digits.crbegin(), digits.crend());
-    out << std::endl;
-    return out;
+    PrintArray(std::cerr, digits.crbegin(), digits.crend());
+    std::cerr << std::endl;
 }
 
-template<typename T>
+template <typename T>
 std::ostream& operator<<(std::ostream& out, const std::vector<T>& rhs) {
     return PrintArray(out, rhs.cbegin(), rhs.cend());
 }
 
-template<typename T, size_t N>
+template <typename T, size_t N>
 std::ostream& operator<<(std::ostream& out, const std::array<T, N>& rhs) {
     return PrintArray(out, rhs.cbegin(), rhs.cend());
 }
 
-template<typename T>
+template <typename T>
 std::ostream& operator <<(std::ostream& out, const std::deque<T>& rhs) {
     return PrintArray(out, rhs.cbegin(), rhs.cend());
 }
 
-template<typename T>
+template <typename T>
 std::ostream& operator <<(std::ostream& out, const std::list<T>& rhs) {
     return PrintArray(out, rhs.cbegin(), rhs.cend());
 }
 
-template<typename T>
+template <typename T>
 std::ostream& operator <<(std::ostream& out, const std::forward_list<T>& rhs) {
     return PrintArray(out, rhs.cbegin(), rhs.cend());
 }
 
-template<typename T, typename T2>
+template <typename T, typename T2>
 std::ostream& operator<<(std::ostream& out, const std::pair<T, T2>& rhs) {
     out << "{" << rhs.first << ",\t" << rhs.second << "}";
     return out;
 }
 
-template<typename Iter>
+template <typename Iter>
 std::ostream& PrintSet(std::ostream& out, Iter b, Iter e) {
     out << "{";
     for (auto iter = b; iter != e; ++iter) {
@@ -85,27 +110,27 @@ std::ostream& PrintSet(std::ostream& out, Iter b, Iter e) {
     return out;
 }
 
-template<typename T>
+template <typename T>
 std::ostream& operator <<(std::ostream& out, const std::set<T>& rhs) {
     return PrintSet(out, rhs.cbegin(), rhs.cend());
 }
 
-template<typename T>
+template <typename T>
 std::ostream& operator <<(std::ostream& out, const std::unordered_set<T>& rhs) {
     return PrintSet(out, rhs.cbegin(), rhs.cend());
 }
 
-template<typename T>
+template <typename T>
 std::ostream& operator <<(std::ostream& out, const std::multiset<T>& rhs) {
     return PrintSet(out, rhs.cbegin(), rhs.cend());
 }
 
-template<typename T>
+template <typename T>
 std::ostream& operator <<(std::ostream& out, const std::unordered_multiset<T>& rhs) {
     return PrintSet(out, rhs.cbegin(), rhs.cend());
 }
 
-template<typename Iter>
+template <typename Iter>
 std::ostream& PrintMap(std::ostream& out, Iter b, Iter e) {
     out << "[";
     for (auto iter = b; iter != e; ++iter) {
@@ -118,22 +143,22 @@ std::ostream& PrintMap(std::ostream& out, Iter b, Iter e) {
     return out;
 }
 
-template<typename T, typename T2>
+template <typename T, typename T2>
 std::ostream& operator<<(std::ostream& out, const std::map<T, T2>& rhs) {
     return PrintMap(out, rhs.cbegin(), rhs.cend());
 }
 
-template<typename T, typename T2>
+template <typename T, typename T2>
 std::ostream& operator<<(std::ostream& out, const std::multimap<T, T2>& rhs) {
     return PrintMap(out, rhs.cbegin(), rhs.cend());
 }
 
-template<typename T, typename T2>
+template <typename T, typename T2>
 std::ostream& operator<<(std::ostream& out, const std::unordered_map<T, T2>& rhs) {
     return PrintMap(out, rhs.cbegin(), rhs.cend());
 }
 
-template<typename T, typename T2>
+template <typename T, typename T2>
 std::ostream& operator<<(std::ostream& out, const std::unordered_multimap<T, T2>& rhs) {
     return PrintMap(out, rhs.cbegin(), rhs.cend());
 }
@@ -162,7 +187,7 @@ void Print(const char*& txt, const char* _txt) {
     }
 }
 
-template<typename T>
+template <typename T>
 void Print(const char*& txt, T&& t) {
     std::string name = "";
     while (*txt != '\0' and *txt != ',') {
@@ -177,12 +202,12 @@ void Print(const char*& txt, T&& t) {
     std::cerr << name << " = " << t << '\t';
 }
 
-template<typename T>
+template <typename T>
 void _debug(const char*& txt, T&& t) {
     Print(txt, t);
 }
 
-template<typename T, typename... Args>
+template <typename T, typename... Args>
 void _debug(const char*& txt, T&& t, Args&&... args) {
     Print(txt, t);
     _debug(txt, args...);
@@ -194,6 +219,6 @@ void __debugE(const char* txt, Args&&... args) {
     std::cerr << std::endl;
 }
 
-}  // namespace Base
+}
 
-#endif  // _PRECOMPILED_DEBUG_H_
+#endif  // _DEBUG_HPP_
