@@ -56,9 +56,6 @@ let g:airline#extensions#default#section_truncate_width={
     \ }
 let g:airline_section_y='%{winnr()}'
 
-" Make rainbow active
-let g:rainbow_active=1
-
 " Tmux
 if &term =~ '^screen'
     " tmux will send xterm-style keys when its xterm-keys option is on
