@@ -8,17 +8,16 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'easymotion/vim-easymotion'
 Plug 'rust-lang/rust.vim'
-Plug 'Valloric/YouCompleteMe', { 'for': ['c', 'cpp', 'rust'] }
+Plug 'Valloric/YouCompleteMe', { 'for': ['c', 'cpp', 'rust']}
 Plug 'vim-airline/vim-airline'
 Plug 'tmux-plugins/vim-tmux'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --bin'}
 Plug 'junegunn/fzf.vim'
-Plug 'SirVer/ultisnips', { 'for': ['cpp', 'rust'] }
-Plug 'honza/vim-snippets'
+Plug 'SirVer/ultisnips', { 'for': ['cpp', 'rust']}
 Plug 'ervandew/supertab'
 Plug 'scrooloose/nerdcommenter'
 Plug 'godlygeek/tabular'
-Plug 'liuchengxu/space-vim-dark' " with Quantum
+"Plug 'liuchengxu/space-vim-dark' with Quantum
 
 call plug#end()
 
@@ -27,6 +26,7 @@ syntax on
 
 " YouCompleteMe settings
 
+"let g:ycm_server_python_interpreter='/usr/local/bin/python3'
 let g:ycm_global_ycm_extra_conf='~/.vim/plugged/YouCompleteMe/.ycm_extra_conf.py'
 let g:ycm_collect_identifiers_from_tags_files=1
 let g:ycm_seed_identifiers_with_syntax=1
@@ -204,7 +204,9 @@ endfunction
 function! VisualSelection(direction) range
     let l:saved_reg = @"
     execute "normal! vgvy"
-let l:pattern = escape(@", '\\/.*$^~[]') let l:pattern = substitute(l:pattern, "\n$", "", "")
+
+    let l:pattern = escape(@", '\\/.*$^~[]')
+    let l:pattern = substitute(l:pattern, "\n$", "", "")
 
     if a:direction == 'b'
         execute "normal ?" . l:pattern . "^M"
@@ -307,12 +309,14 @@ imap ∆ 10j
 
 function! RunFunc()
     if exists("b:run")
+        execute "!clear"
         execute "!time " . b:run
     endif
 endfunction
 
 function! DebugFunc()
     if exists("b:debug")
+        execute "!clear"
         execute "!" . b:debug
     endif
 endfunction
@@ -340,9 +344,9 @@ command! Debug :call CompileFunc(function('DebugFunc'))
 
 " C/C++
 autocmd FileType c let b:compile='clang -g -Wall -Wextra % -o %< -lm'
-autocmd FileType cpp let b:compile='clang++ -g -std=c++2a -Wall -Wextra -Wfatal-errors -fsanitize=undefined,address -include /usr/local/include/debug.h -lm -Wl,-stack_size,0xd0000000 % -o _%<'
+autocmd FileType cpp let b:compile='clang++ -pipe -g -std=c++17 -O2 -Wall -Wextra -Wfloat-equal -Wfatal-errors -Wdisabled-optimization -D_GLIBCXX_ASSERTIONS -D_FORTIFY_SOURCE=2 -fasynchronous-unwind-tables -fstack-protector -fstack-protector-strong -fexceptions -fsanitize=undefined,address -fno-omit-frame-pointer -fpie -Wl,-pie -Werror=format-security -include /usr/local/include/debug.hpp -Wl,-stack_size,0xd0000000 -lm % -o _%<'
 autocmd FileType c,cpp let b:run='./_%<'
-autocmd FileType cpp  let b:debug='lldb _%<'
+autocmd FileType cpp  let b:debug='clang++ -pipe -g -std=c++17 -Wall -Wextra -Wfloat-equal -Wfatal-errors -Wdisabled-optimization -D_GLIBCXX_ASSERTIONS -D_FORTIFY_SOURCE=2 -fasynchronous-unwind-tables -fstack-protector -fstack-protector-strong -fexceptions -fsanitize=undefined,address -fno-omit-frame-pointer -fpie -Wl,-pie -Werror=format-security -Wl,-stack_size,0xd0000000 -lm % -o _%< && lldb _%<'
 
 " Rust
 autocmd FileType rust let b:compile='rustc -g % -o _%<'
