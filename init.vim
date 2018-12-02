@@ -67,6 +67,12 @@ Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
 Plug 'Shougo/deoplete-clangx'
 
+Plug 'scrooloose/nerdtree'
+  noremap <leader>\ :NERDTree<CR>
+
+Plug 'majutsushi/tagbar'
+  noremap <leader>/ :TagbarToggle<CR>
+
 call plug#end()
 
 filetype plugin indent on
@@ -106,7 +112,7 @@ set encoding=utf8
 set fileformats=unix,dos,mac
 
 " Toggle invisible characters
-set list listchars=trail:·,tab:┊\ ,extends:>,precedes:<,nbsp:·
+set list listchars=trail:¬∑,tab:‚îä\ ,extends:>,precedes:<,nbsp:¬∑
 
 " Discard error bells
 set noerrorbells
@@ -184,6 +190,11 @@ set pastetoggle=<C-b>
 " disable highlight
 map <silent> <leader><cr> :noh<cr>
 
+map <C-j> <C-W>j
+map <C-k> <C-W>k
+map <C-h> <C-W>h
+map <C-l> <C-W>l
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Spell check
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -202,6 +213,10 @@ map <leader>s? z=
 
 map <leader>l :bnext<CR>
 map <leader>h :bprevious<CR>
+map <leader>d :bdelete<cr>
+
+map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
+map <leader>cd :cd %:p:h<cr>:pwd<cr>
 
 set switchbuf=useopen,usetab,newtab
 set showtabline=2
