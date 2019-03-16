@@ -27,26 +27,18 @@ Plug 'morhetz/gruvbox'
 
 Plug 'rust-lang/rust.vim'
 
-Plug 'w0rp/ale'
-  let g:ale_enabled     = 1
-  let g:ale_fix_on_save = 1
-  let g:ale_fixers = {
-    \ '*': ['remove_trailing_lines', 'trim_whitespace'],
+" Autocompletion
+Plug 'autozimu/LanguageClient-neovim', {
+  \ 'branch': 'next',
+  \ 'do': 'bash install.sh',
+  \ }
+  let g:LanguageClient_autoStart         = 1
+  let g:LanguageClient_hasSnippetSupport = 0
+  let g:LanguageClient_serverCommands = {
+    \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
+    \ 'cpp': ['clangd'],
     \ }
 
-  let g:ale_completion_enabled   = 1
-  let g:ale_lint_on_text_changed = "normal"
-  let g:ale_lint_on_insert_leave = 1
-  let g:ale_linters = {
-    \ 'cpp': ['clang'],
-    \ 'rust': ['cargo'],
-    \ 'python': ['pylint'] }
-  let g:ale_set_signs             = 1
-  let g:ale_use_deprecated_neovim = 1
-  let g:ale_sign_error            = '> '
-  let g:ale_sign_warning          = '! '
-
-" Autocompletion
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
   let g:deoplete#enable_at_startup=1
   " Tab completion
@@ -60,14 +52,15 @@ Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
     \ deoplete#manual_complete()
   " Close the documentation window when completion is done
   autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
-Plug 'Shougo/deoplete-clangx'
-Plug 'racer-rust/vim-racer'
 
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
-  let g:UltiSnipsExpandTrigger       = "<TAB>"
-  let g:UltiSnipsJumpForwardTrigger  = "<Right>"
-  let g:UltiSnipsJumpBackwardTrigger = "<Left>"
+Plug 'Shougo/neosnippet.vim'
+Plug 'Shougo/neosnippet-snippets'
+  imap <C-k> <Plug>(neosnippet_expand_or_jump)
+  smap <C-k> <Plug>(neosnippet_expand_or_jump)
+  xmap <C-k> <Plug>(neosnippet_expand_target)
+  if has('conceal')
+    set conceallevel=2 concealcursor=niv
+  endif
 
 Plug 'scrooloose/nerdtree'
   let g:NERDTreeWinPos              = 'left'
@@ -87,28 +80,15 @@ Plug 'godlygeek/tabular'
   endfunction
   nnoremap <Leader>t :call GetTabber()<CR>
 
-Plug 'maximbaz/lightline-ale'
 Plug 'itchyny/lightline.vim'
   set laststatus=2
   set noshowmode
   let g:lightline = {
     \ 'colorscheme': 'gruvbox',
     \ }
-  let g:lightline.component_expand = {
-    \  'linter_checking': 'lightline#ale#checking',
-    \  'linter_warnings': 'lightline#ale#warnings',
-    \  'linter_errors': 'lightline#ale#errors',
-    \  'linter_ok': 'lightline#ale#ok',
-    \ }
-  let g:lightline.component_type = {
-    \  'linter_checking': 'left',
-    \  'linter_warnings': 'warning',
-    \  'linter_errors': 'error',
-    \  'linter_ok': 'left',
-    \ }
-  let g:lightline.active = { 'right': [[ 'linter_checking', 'linter_errors', 'linter_warnings']] }
 
-Plug 'tpope/vim-surround'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-fugitive'
 
 call plug#end()
 
@@ -194,9 +174,8 @@ set cinoptions=l1
 set cino=N-s
 
 set ruler
-set colorcolumn=80
+set colorcolumn=81
 set linebreak
-set textwidth=80
 
 set scrolloff=7
 
