@@ -224,3 +224,11 @@ map <C-l> <C-W>l
 
 set switchbuf=useopen,usetab,newtab
 set showtabline=2
+
+function! DeleteTrailingWS()
+  exe "normal mz"
+  %s/\s\+$//ge
+  exe "normal `z"
+endfunction
+
+autocmd BufWritePre * :call DeleteTrailingWS()
