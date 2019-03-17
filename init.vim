@@ -133,8 +133,8 @@ set clipboard+=unnamed
 
 " Toggle invisible characters
 set list
-set listchars=tab:‚îä\ ,nbsp:‚ê£,trail:‚àô,extends:>,precedes:<
-set fillchars=vert:\‚îÇ
+set listchars=tab:┊\ ,nbsp:␣,trail:∙,extends:>,precedes:<
+set fillchars=vert:\│
 
 " Discard error bells
 set noerrorbells
