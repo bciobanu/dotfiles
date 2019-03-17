@@ -23,7 +23,8 @@ Plug 'easymotion/vim-easymotion'
   let g:EasyMotion_do_mapping=0
   map s <Plug>(easymotion-bd-f2)
 
-Plug 'morhetz/gruvbox'
+Plug 'arcticicestudio/nord-vim'
+  let g:nord_comment_brightness = 15
 
 Plug 'rust-lang/rust.vim'
 
@@ -84,11 +85,10 @@ Plug 'itchyny/lightline.vim'
   set laststatus=2
   set noshowmode
   let g:lightline = {
-    \ 'colorscheme': 'gruvbox',
+    \ 'colorscheme': 'nord',
     \ }
 
 Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-fugitive'
 
 call plug#end()
 
@@ -108,7 +108,7 @@ if has('termguicolors')
 endif
 
 set background=dark
-colorscheme gruvbox
+colorscheme nord
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " General
@@ -133,8 +133,8 @@ set clipboard+=unnamed
 
 " Toggle invisible characters
 set list
-set listchars=tab:┊\ ,nbsp:␣,trail:∙,extends:>,precedes:<
-set fillchars=vert:\│
+set listchars=tab:‚îä\ ,nbsp:‚ê£,trail:‚àô,extends:>,precedes:<
+set fillchars=vert:\‚îÇ
 
 " Discard error bells
 set noerrorbells
@@ -199,15 +199,24 @@ imap kj <ESC>
 
 noremap ; :
 
-" break long lines
+" Break long lines
 noremap j gj
 noremap k gk
 noremap ^ g^
 noremap $ g$
 noremap 0 ^
 
-" disable highlight
+" Disable highlight
 map <silent> <leader><cr> :noh<cr>
+
+" Upon writing remove trailing whitespaces
+function! DeleteTrailingWS()
+  exe "normal mz"
+  %s/\s\+$//ge
+  exe "normal `z"
+endfunction
+
+autocmd BufWritePre * :call DeleteTrailingWS()
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Buffers
@@ -225,10 +234,17 @@ map <C-l> <C-W>l
 set switchbuf=useopen,usetab,newtab
 set showtabline=2
 
-function! DeleteTrailingWS()
-  exe "normal mz"
-  %s/\s\+$//ge
-  exe "normal `z"
-endfunction
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Terminal mode
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-autocmd BufWritePre * :call DeleteTrailingWS()
+tmap <Esc> <C-\><C-n>
+tmap <C-h> <C-\><C-n><C-h>
+tmap <C-j> <C-\><C-n><C-j>
+tmap <C-k> <C-\><C-n><C-k>
+tmap <C-l> <C-\><C-n><C-l>
+
+autocmd WinEnter *
+ \ if &buftype ==# 'terminal' |
+ \  startinsert |
+ \ endif
