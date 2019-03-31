@@ -20,11 +20,13 @@ Plug 'junegunn/fzf.vim'
 Plug 'junegunn/goyo.vim'
 
 Plug 'easymotion/vim-easymotion'
-  let g:EasyMotion_do_mapping=0
-  map s <Plug>(easymotion-bd-f2)
+  let g:EasyMotion_do_mapping = 0
+  map  / <Plug>(easymotion-sn)
+  omap / <Plug>(easymotion-tn)
+  map  n <Plug>(easymotion-next)
+  map  N <Plug>(easymotion-prev)
 
-Plug 'arcticicestudio/nord-vim'
-  let g:nord_comment_brightness = 15
+Plug 'zakj/vim-mourning'
 
 Plug 'rust-lang/rust.vim'
 
@@ -85,7 +87,7 @@ Plug 'itchyny/lightline.vim'
   set laststatus=2
   set noshowmode
   let g:lightline = {
-    \ 'colorscheme': 'nord',
+    \ 'colorscheme': 'seoul256',
     \ }
 
 Plug 'tpope/vim-commentary'
@@ -108,7 +110,7 @@ if has('termguicolors')
 endif
 
 set background=dark
-colorscheme nord
+colorscheme mourning
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " General
@@ -133,8 +135,8 @@ set clipboard+=unnamed
 
 " Toggle invisible characters
 set list
-set listchars=tab:┊\ ,nbsp:␣,trail:∙,extends:>,precedes:<
-set fillchars=vert:\│
+set listchars=tab:‚îä\ ,nbsp:‚ê£,trail:‚àô,extends:>,precedes:<
+set fillchars=vert:\‚îÇ
 
 " Discard error bells
 set noerrorbells
@@ -161,9 +163,9 @@ set splitright
 
 " Indenting
 set expandtab
-set tabstop=2
-set softtabstop=2
-set shiftwidth=2
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
 set shiftround
 set smarttab
 
@@ -243,6 +245,8 @@ tmap <C-h> <C-\><C-n><C-h>
 tmap <C-j> <C-\><C-n><C-j>
 tmap <C-k> <C-\><C-n><C-k>
 tmap <C-l> <C-\><C-n><C-l>
+
+set shell=/usr/local/bin/zsh
 
 autocmd WinEnter *
  \ if &buftype ==# 'terminal' |
