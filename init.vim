@@ -2,95 +2,10 @@ let g:mapleader = "\<Space>"
 
 call plug#begin('~/.vim/plugged')
 
-Plug 'junegunn/fzf', {'dir':'~/.fzf', 'do':'./install --all'}
-Plug 'junegunn/fzf.vim'
-  nnoremap <leader>; : Buffers<CR>
-  nnoremap <leader>f : Files<CR>
-  nnoremap T         : Tags<CR>
-  nnoremap t         : BTags<CR>
-  nnoremap <leader>s : Lines<CR>
-  nnoremap <leader>S : Rg<CR>
-  let g:fzf_layout = { 'down': '~20%' }
-  let g:rg_command = '
-    \ rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --color "always"
-    \ -g "*.{ts,js,json,php,md,styl,pug,jade,html,config,py,cpp,c,go,hs,rb,conf,fa,lst}"
-    \ -g "!{.config,.git,node_modules,vendor,build,yarn.lock,*.sty,*.bst,*.coffee,dist}/*" '
-  command! -bang -nargs=* F call fzf#vim#grep(g:rg_command .shellescape(<q-args>), 0, <bang>0)
-
-Plug 'junegunn/goyo.vim'
-
-Plug 'easymotion/vim-easymotion'
-  let g:EasyMotion_do_mapping = 0
-  map  / <Plug>(easymotion-sn)
-  omap / <Plug>(easymotion-tn)
-  map  n <Plug>(easymotion-next)
-  map  N <Plug>(easymotion-prev)
-
-Plug 'zakj/vim-mourning'
-
 Plug 'rust-lang/rust.vim'
-
-" Autocompletion
-Plug 'autozimu/LanguageClient-neovim', {
-  \ 'branch': 'next',
-  \ 'do': 'bash install.sh',
-  \ }
-  let g:LanguageClient_autoStart         = 1
-  let g:LanguageClient_hasSnippetSupport = 0
-  let g:LanguageClient_serverCommands = {
-    \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
-    \ 'cpp': ['clangd'],
-    \ }
-
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-  let g:deoplete#enable_at_startup=1
-  " Tab completion
-  function! s:check_back_space() abort "{{{
-  let col = col('.') - 1
-    return !col || getline('.')[col - 1]  =~ '\s'
-  endfunction"}}}
-  inoremap <silent><expr> <TAB>
-    \ pumvisible() ? "\<C-n>" :
-    \ <SID>check_back_space() ? "\<TAB>" :
-    \ deoplete#manual_complete()
-  " Close the documentation window when completion is done
-  autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
-
-Plug 'Shougo/neosnippet.vim'
-Plug 'Shougo/neosnippet-snippets'
-  imap <C-k> <Plug>(neosnippet_expand_or_jump)
-  smap <C-k> <Plug>(neosnippet_expand_or_jump)
-  xmap <C-k> <Plug>(neosnippet_expand_target)
-  if has('conceal')
-    set conceallevel=2 concealcursor=niv
-  endif
-
-Plug 'scrooloose/nerdtree'
-  let g:NERDTreeWinPos              = 'left'
-  let g:NERDTreeWinSize             = 20
-  let g:NERDTreeStatusline          = "  "
-  let g:NERDTreeDirArrowExpandable  = '+'
-  let g:NERDTreeDirArrowCollapsible = '-'
-  noremap <leader>\ :NERDTree<CR>
-
-Plug 'majutsushi/tagbar'
-  noremap <leader>/ :TagbarToggle<CR>
-
-Plug 'godlygeek/tabular'
-  function! GetTabber()
-    let c = nr2char(getchar())
-    :execute "Tabularize /" . c
-  endfunction
-  nnoremap <Leader>t :call GetTabber()<CR>
-
-Plug 'itchyny/lightline.vim'
-  set laststatus=2
-  set noshowmode
-  let g:lightline = {
-    \ 'colorscheme': 'seoul256',
-    \ }
-
+Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'tpope/vim-commentary'
+Plug 'junegunn/seoul256.vim'
 
 call plug#end()
 
@@ -110,7 +25,7 @@ if has('termguicolors')
 endif
 
 set background=dark
-colorscheme mourning
+colorscheme seoul256
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " General
@@ -134,9 +49,9 @@ set fileformats=unix,dos,mac
 set clipboard+=unnamed
 
 " Toggle invisible characters
-set list
-set listchars=tab:‚îä\ ,nbsp:‚ê£,trail:‚àô,extends:>,precedes:<
-set fillchars=vert:\‚îÇ
+"set list
+"set listchars=tab:‚îä\ ,nbsp:‚ê£,trail:‚àô,extends:>,precedes:<
+"set fillchars=vert:\‚îÇ
 
 " Discard error bells
 set noerrorbells
@@ -235,20 +150,3 @@ map <C-l> <C-W>l
 
 set switchbuf=useopen,usetab,newtab
 set showtabline=2
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Terminal mode
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-tmap <Esc> <C-\><C-n>
-tmap <C-h> <C-\><C-n><C-h>
-tmap <C-j> <C-\><C-n><C-j>
-tmap <C-k> <C-\><C-n><C-k>
-tmap <C-l> <C-\><C-n><C-l>
-
-set shell=/usr/local/bin/zsh
-
-autocmd WinEnter *
- \ if &buftype ==# 'terminal' |
- \  startinsert |
- \ endif
