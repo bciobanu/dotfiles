@@ -2,6 +2,13 @@
 
 ;; Place your private configuration here
 
-(setq doom-font (font-spec :family "Hack Nerd Font Mono" :size 12))
+(setq user-full-name "Bogdan Ciobanu"
+      user-mail-address "")
+
+(load-theme 'doom-solarized-light t)
+(setq-default indent-tabs-mode nil)
+(setq org-directory "~/Personal/org/")
+(setq doom-font (font-spec :family "Input" :size 14))
 (setq display-line-numbers-type 'relative)
-(setq fill-column 120)
+
+(setenv "PATH" "/Library/TeX/texbin:$PATH" t)
