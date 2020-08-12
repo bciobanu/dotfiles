@@ -7,8 +7,6 @@
 
 (load-theme 'doom-solarized-light t)
 (setq-default indent-tabs-mode nil)
-(setq org-directory "~/Personal/org/")
+(setq org-directory "~/Dropbox/org")
 (setq doom-font (font-spec :family "Input" :size 14))
 (setq display-line-numbers-type 'relative)
-
-(setenv "PATH" "/Library/TeX/texbin:$PATH" t)
