@@ -21,7 +21,7 @@ source $ZSH/oh-my-zsh.sh
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 alias vim="nvim"
-alias cat="bat"
+alias cat="bat --theme='Solarized (light)'"
 alias ll="exa -la"
 alias ch="cat /dev/null > ~/.zsh_history"
 alias hgrep="history -fd 0 | grep"
