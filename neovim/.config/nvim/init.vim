@@ -31,7 +31,7 @@ set inccommand=nosplit
 
 function! SetupSolarized()
     set termguicolors
-    colorscheme solarized8_high
+    colorscheme flatwhite
 endfunction
 
 function! SetupEasymotion()
