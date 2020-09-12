@@ -16,8 +16,7 @@ plugins=(
   git
   fzf
   ripgrep
-  zsh-autosuggestions
-  zsh-syntax-highlighting
+  zsh-autocomplete
 )
 
 source $ZSH/oh-my-zsh.sh

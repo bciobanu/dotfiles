@@ -5,9 +5,10 @@
 (setq user-full-name "Bogdan Ciobanu"
       user-mail-address "")
 
-(load-theme 'doom-solarized-light t)
+(load-theme 'leuven t)
 (setq-default indent-tabs-mode nil)
 (setq default-directory "~/")
 (setq org-directory "~/Dropbox/org")
 (setq doom-font (font-spec :family "Input" :size 14))
 (setq display-line-numbers-type 'relative)
+(setq ledger-binary-path "/usr/local/bin/ledger")
