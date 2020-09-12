@@ -1,5 +1,22 @@
 let g:mapleader = "\<Space>"
 
+call plug#begin(stdpath('data') . '/plugged')
+
+Plug 'tpope/vim-sensible'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-unimpaired'
+Plug 'tpope/vim-repeat'
+
+Plug 'chaoren/vim-wordmotion'
+Plug 'justinmk/vim-sneak'
+Plug 'tommcdo/vim-lion'
+Plug 'junegunn/fzf.vim'
+
+Plug 'lifepillar/vim-solarized8'
+
+call plug#end()
+
 filetype plugin indent on
 syntax on
 
@@ -26,17 +43,16 @@ set ruler
 set colorcolumn=81
 
 " transparency for floating windows
-set winblend=100
+set winblend=20
 set inccommand=nosplit
 
-function! SetupSolarized()
+function! SetupTheme()
     set termguicolors
-    colorscheme flatwhite
+    colorscheme solarized8
 endfunction
 
-function! SetupEasymotion()
-    let g:EasyMotion_do_mapping=0
-    nmap s <Plug>(easymotion-bd-f2)
+function! SetupSneak()
+    let g:sneak#label = 1
 endfunction
 
 function! SetupFZF()
@@ -62,6 +78,6 @@ function! SetupFZF()
     endfunction
 endfunction
 
-call SetupSolarized()
-call SetupEasymotion()
+call SetupTheme()
+call SetupSneak()
 call SetupFZF()

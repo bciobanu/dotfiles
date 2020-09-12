@@ -14,6 +14,8 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 plugins=(
   colored-man-pages
   git
+  fzf
+  ripgrep
   zsh-autosuggestions
   zsh-syntax-highlighting
 )

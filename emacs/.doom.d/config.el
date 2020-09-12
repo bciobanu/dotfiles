@@ -5,7 +5,7 @@
 (setq user-full-name "Bogdan Ciobanu"
       user-mail-address "")
 
-(load-theme 'spacemacs-dark t)
+(load-theme 'doom-solarized-light t)
 (setq-default indent-tabs-mode nil)
 (setq default-directory "~/")
 (setq org-directory "~/Dropbox/org")
