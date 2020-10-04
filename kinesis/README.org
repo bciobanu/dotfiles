@@ -1,0 +1,80 @@
+#+TITLE: Kinesis Mappings
+
+* Manual
+https://kinesis-ergo.com/wp-content/uploads/Adv2-Users-Manual-fw1.0.521.us-9-16-20.pdf
+
+* V-Drive
+Kinesis Advantage 2 has an internal memory of about 5MB. To access it you can follow these steps:
+** Enter in power user mode
+PROGM-<S-ESC>
+** Open V-Drive
+PROGM-F1
+** Update your config
+On macOS it gets mounted over at /Volumes/NO\ NAME/.
+** Close V-Drive
+Unmount it from macOS and then press PROGM-F1 quickly to avoid it remounting.
+** Remarks
+This last step feels kind of broken at times, but I found that this sequence of actions is least likely to brick your keyboard.
+As of <2020-10-04 Sun> Kinesis don't support reformatting of the drive on macOS, but only on Windows.
+Maybe one day they will publish the source code for the Windows driver over at https://github.com/KinesisCorporation.
+
+* Layout
+ My layout is currently optimized for writing C code and navigating using iTerm2.
+
+** Mappings
+The three layers are in order: shift mode, normal mode, keypad mode.
+
+|----------+---+-------+--------+---------+-----+------------+------------+-----------+-------------+----------+----------|
+| +        | ! | @     | #      | $       | %   | ^          | &          | *         | (           | )        | _        |
+| =        | 1 | 2     | 3      | 4       | 5   | 6          | 7          | 8         | 9           | 0        | -        |
+| =        | 1 | 2     | 3      | 4       | 5   | 6          | NUMLK      | =         | /           | *        | -        |
+|----------+---+-------+--------+---------+-----+------------+------------+-----------+-------------+----------+----------|
+| S-<TAB>  | Q | W     | E      | R       | T   | Y          | U          | I         | O           | P        | <PIPE>   |
+| <TAB>    | q | w     | e      | r       | t   | y          | u          | i         | o           | p        | \        |
+| <TAB>    | ! | +     | (      | )       | [[M-W]] | [[A-C-<LEFT>]] | A-C-<DOWN> | A-C-<UP>  | A-C-<RIGHT> | -        | \        |
+|----------+---+-------+--------+---------+-----+------------+------------+-----------+-------------+----------+----------|
+| <CAPS>   | A | S     | D      | F       | G   | H          | J          | K         | L           | :        | "        |
+| <ESC>    | a | s     | d      | f       | g   | h          | j          | k         | l           | ;        | '        |
+| <CAPS>   | ~ | =     | [      | ]       | [[M-G]] | [[A-M-<LEFT>]] | A-M-<DOWN> | A-M-<UP>  | A-M-<RIGHT> | +        | '        |
+|----------+---+-------+--------+---------+-----+------------+------------+-----------+-------------+----------+----------|
+| <LSHIFT> | Z | X     | C      | V       | B   | N          | M          | <         | >           | ?        | <RSHIFT> |
+| <LSHIFT> | z | x     | c      | v       | b   | n          | m          | ,         | .           | /        | <RSHIFT> |
+| <LSHIFT> | z | -     | {      | }       | [[M-D]] | [[C-M-<LEFT>]] | C-M-<DOWN> | C-M-<UP>  | C-M-<RIGHT> | <ENTER>  | <RSHIFT> |
+|----------+---+-------+--------+---------+-----+------------+------------+-----------+-------------+----------+----------|
+|          | ~ | ±     | {      | }       |     |            | S-<LEFT>   | S-<RIGHT> | S-<UP>      | S-<DOWN> |          |
+|          | ` | §     | [      | ]       |     |            | <LEFT>     | <RIGHT>   | <UP>        | <DOWN>   |          |
+|          | ` | <INS> | <LEFT> | <RIGHT> |     |            | <UP>       | <DOWN>    | .           | <ENTER>  |          |
+|----------+---+-------+--------+---------+-----+------------+------------+-----------+-------------+----------+----------|
+
+|----------+----------+--------+------------+---------+---------|
+|          | <HOME>   | <END>  | <CTRL>     | <CMD>   |         |
+|----------+----------+--------+------------+---------+---------|
+| <BSPACE> | [[<KEYPAD>]] | <CTRL> | <PAGEUP>   | <ENTER> | <SPACE> |
+|----------+----------+--------+------------+---------+---------|
+| <BSPACE> | [[<KEYPAD>]] | <ALT>  | <PAGEDOWN> | <ENTER> | <SPACE> |
+|----------+----------+--------+------------+---------+---------|
+
+Haven't changed much on the functional row expect I made <printscm> work on macOS.
+
+** Keypad mode motivation
+#+NAME: M-W
+#+DESC: Kill iTerm window.
+
+#+NAME: A-C-<LEFT>
+#+DESC: Swap iTerm pane with left pane.
+Note that these are not bound by default in iTerm.
+
+#+NAME: M-G
+#+DESC: Split iTerm pane vertically.
+
+#+NAME: A-M-<LEFT>
+#+DESC: Select left iTerm pane.
+
+#+NAME: M-D
+#+DESC: Split iTerm pane horizontally.
+
+#+NAME: C-M-<LEFT>
+#+DESC: Increase iTerm pane size to the left.
+
+#+NAME: <KEYPAD>
+#+DESC: Toggles the third layer.
