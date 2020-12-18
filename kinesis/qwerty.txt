@@ -29,6 +29,8 @@
 {kp-G}>{-rwin}{d}{+rwin}
 {kp-B}>{-Lshift}{-rwin}{d}{+rwin}{+Lshift}
 {kp-Y}>{-Lalt}{-Lctrl}{left}{+Lctrl}{+Lalt}
+{kp-Z}>{-Lshift}{-rwin}{enter}{+rwin}{+Lshift}
+{kp-enter}>{-Lshift}{-rwin}{.}{+rwin}{+Lshift}
 {kp7}>{-Lalt}{-Lctrl}{down}{+Lctrl}{+Lalt}
 {kp8}>{-Lalt}{-Lctrl}{up}{+Lctrl}{+Lalt}
 {kp9}>{-Lalt}{-Lctrl}{right}{+Lctrl}{+Lalt}
